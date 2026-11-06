@@ -76,7 +76,7 @@ Klip: mono video 1920x1080, 30 fps, 38 s (1148 snímok). Spracovaných bolo prv�
 | Export Animation (Performer Skeleton) | OK, `AnimSequence`, 149 snímok, 4,97 s, 342 kostí |
 | Kontrola pohybu | rotácie sa menia na všetkých 11 kontrolovaných kostiach (najviac `upperarm_r` ~20°), panva sa posúva o ~8 cm |
 
-Odhad pre celý klip je lineárne ~80 minút, nebol skúšaný. Počas jednej vzorky v stage 3 bolo GPU na 100 % (7 GB z 8 GB VRAM) a CPU takmer nečinné; ostatné stage neboli merané, takže nie je potvrdené, že CPU nie je úzke hrdlo inde.
+Odhad pre celý klip je lineárne ~80 minút, nebol skúšaný. Počas jednej vzorky v stage 4 bolo GPU na 100 % (7 GB z 8 GB VRAM) a CPU takmer nečinné; ostatné stage neboli merané, takže nie je potvrdené, že CPU nie je úzke hrdlo inde.
 
 **Neoverené:** vizuálna kvalita. Čísla ukazujú, že sa kosti hýbu, nie že pohyb zodpovedá videu. Animáciu treba pozrieť v editore.
 
