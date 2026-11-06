@@ -78,7 +78,7 @@ Klip: mono video 1920x1080, 30 fps, 38 s (1148 snímok). Spracovaných bolo prv�
 
 Odhad pre celý klip je lineárne ~80 minút, nebol skúšaný. Počas jednej vzorky v stage 4 bolo GPU na 100 % (7 GB z 8 GB VRAM) a CPU takmer nečinné; ostatné stage neboli merané, takže nie je potvrdené, že CPU nie je úzke hrdlo inde.
 
-**Neoverené:** vizuálna kvalita. Čísla ukazujú, že sa kosti hýbu, nie že pohyb zodpovedá videu. Animáciu treba pozrieť v editore.
+**Výsledok vizuálnej kontroly: neúspech.** Používateľ animáciu pozrel v editore a nevyzerala dobre. Čísla ukázali len to, že sa kosti hýbu, nie že pohyb zodpovedá videu. Príčina nie je zistená; klip bol vybraný bez kontroly obsahu, takže nemusel spĺňať podmienky (jeden človek, celá postava v zábere). Klip, snímky a animácia boli z projektu odstránené (presunuté do Koša).
 
 Poznámky k skriptovaniu:
 - Epic skripty: `CaptureManagerApp/Content/Python/examples/mono_video_ingest.py` (spúšťa sa v `LiveLinkHub.exe`, editor musí bežať) a `MetaHumanAnimator/Content/Python/process_monocular_performance.py`.
@@ -105,7 +105,7 @@ Treba dohľadať: <https://dev.epicgames.com/documentation/metahuman/metahuman-a
 - Vzhľad okna Plugins v UI (z logu je stav známy, pozri 3a).
 - Stabilita na dlhších klipoch pri 8 GB VRAM (5 s klip využil ~7 GB).
 - Presné požiadavky na video (rozlíšenie, FPS, rámovanie).
-- Vizuálna kvalita animácie (pozri sekciu 5a) a export na MetaHuman cez *Existing Skeleton*.
+- Dobrá vizuálna kvalita zatiaľ nebola dosiahnutá; ďalší test s vhodným klipom (jeden hráč, celá postava, statická kamera). Export na MetaHuman cez *Existing Skeleton*.
 
 ## Zdroje
 
