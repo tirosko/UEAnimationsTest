@@ -20,6 +20,7 @@ Testovací projekt pre Unreal Engine 5.8 (5.8.4, Windows): prevod videa na anim�
 - Plugin pre sledovanie tela z videa je nainštalovaný a načítaný (moduly `MetaHumanBodyTracker`, `BodyTracker`, `Segmentation`, `MetaHumanBodyOptimizer`, bez warningov v logu). Detaily v [Docs/MetaHumanVideoToBodyAnimation.md](Docs/MetaHumanVideoToBodyAnimation.md).
 - Unreal MCP otestovaný: server beží na porte 8000, `list_toolsets` a `call_tool` fungujú.
 - Technicky prešlo: video -> animácia tela na 5 s úseku (ingest, Performance, export `AnimSequence`), ~4,3 s na snímku. **Výsledok vizuálne nevyhovel** a bol odstránený. Detaily v [sekcii 5a](Docs/MetaHumanVideoToBodyAnimation.md).
+- Neoverené: test s vhodným klipom (jeden hráč, celá postava), dlhší klip, export na MetaHuman cez Existing Skeleton.
 
 ## Použitie
 
