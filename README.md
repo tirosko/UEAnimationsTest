@@ -16,13 +16,13 @@ Testovací projekt pre Unreal Engine 5.8 (5.8.4, Windows): prevod videa na anim�
 
 ## Stav
 
-- Zapnuté pluginy: `MetaHuman`, `ModelingToolsEditorMode`, `PythonScriptPlugin`, `ModelContextProtocol`, `EditorToolset`.
-- **Chýba** plugin MetaHuman Animator Markerless Motion Capture (Fab), ktorý je potrebný na sledovanie tela z videa. Bez neho video na animáciu tela nepôjde. Detaily v [Docs/MetaHumanVideoToBodyAnimation.md](Docs/MetaHumanVideoToBodyAnimation.md).
+- Zapnuté pluginy: `MetaHuman`, `MetaHumanBodyTracker` (MetaHuman Animator Markerless Motion Capture, beta, nainštalovaný z Fab do enginu), `ModelingToolsEditorMode`, `PythonScriptPlugin`, `ModelContextProtocol`, `EditorToolset`.
+- Plugin pre sledovanie tela z videa je nainštalovaný a načítaný (moduly `MetaHumanBodyTracker`, `BodyTracker`, `Segmentation`, `MetaHumanBodyOptimizer`, bez warningov v logu). Detaily v [Docs/MetaHumanVideoToBodyAnimation.md](Docs/MetaHumanVideoToBodyAnimation.md).
 - Unreal MCP otestovaný: server beží na porte 8000, `list_toolsets` a `call_tool` fungujú.
-- Neotestované: samotné spracovanie videa na animáciu, výkon na 8 GB VRAM a 4 fyzických jadrách CPU.
+- Neotestované: samotné spracovanie videa na animáciu (MetaHuman Performance), výkon na 8 GB VRAM a 4 fyzických jadrách CPU.
 
 ## Použitie
 
 1. Otvor `AnimationsTest.uproject` v UE 5.8.
-2. Nainštaluj plugin Markerless Motion Capture z Fab podľa dokumentácie.
+2. Plugin `MetaHumanBodyTracker` musí byť nainštalovaný v engine (Fab Library > Install to Engine, UE 5.8); v projekte je zapnutý v `.uproject`.
 3. Pre prácu cez Claude Code spusti session v tomto priečinku a over, že editor beží (MCP na porte 8000).

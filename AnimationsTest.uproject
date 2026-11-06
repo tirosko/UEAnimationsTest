@@ -31,6 +31,10 @@
     {
       "Name": "EditorToolset",
       "Enabled": true
-    }
+    },
+		{
+			"Name": "MetaHumanBodyTracker",
+			"Enabled": true
+		}
   ]
 }

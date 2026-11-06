@@ -7,7 +7,7 @@ Zdroje: inštalácia enginu (`.uplugin`, zdrojáky pluginov), `Saved/Logs/Animat
 
 Video -> body animation je v UE 5.8 **experimentálna** funkcia „MetaHuman Animator Markerless Motion Capture“ (len Windows, len editor). Používa sa cez asset **MetaHuman Performance** (MonoFootage + zapnuté *Body Tracking*).
 
-**Blokujúci nedostatok:** plugin *MetaHuman Animator Markerless Motion Capture* sa **nenachádza v inštalácii enginu**. Epic ho distribuuje cez Fab, treba ho nainštalovať. V engine je len rozhranie `MetaHumanBodyTrackerInterface` (modul v `MetaHumanCoreTech`) a kód hľadá plugin s názvom `MetaHumanBodyTracker` (`HyprsenseRealtimeNode.cpp`); implementácia v engine nie je. Prehľadanie `E:\` a `C:\ProgramData\Epic` žiadny takýto plugin nenašlo.
+**Plugin je nainštalovaný a načítaný** (2026-11-06): *MetaHuman Animator Markerless Motion Capture*, názov pluginu `MetaHumanBodyTracker` v1.0.0 (Beta, Experimental), `E:\Epic_Games\UE_5.8\Engine\Plugins\Marketplace\MetaHumanBodyTracker_5.8` (~5,5 GB, obsahuje modely Detectron2, IK_SMPL a IK Retargeter pre MetaHuman). Je to ten istý plugin, ktorý Epic v kroku 2 nazýva „Body Animation“ - v UE 5.8 existuje len jeden plugin pre telo, v inštalácii nie je žiadny iný s „Body“ v názve. Bol nainštalovaný do **enginu** (Fab/Launcher), v projekte je zapnutý v `AnimationsTest.uproject`.
 
 ## 2. Pluginy – stav
 
@@ -17,13 +17,13 @@ Video -> body animation je v UE 5.8 **experimentálna** funkcia „MetaHuman Ani
 | MetaHumanCoreTech | jadro, `MetaHumanBodyTrackerInterface` | áno | závislosť (log: modul sa načíta) |
 | MetaHumanSDK | základ MetaHuman nástrojov | áno | závislosť (log: mountnutý) |
 | CaptureData, CaptureManagerEditor, PerformanceCaptureCore, LiveLinkHub, NNERuntimeORT, IKRig... | závislosti MetaHuman pluginu (všetky `Enabled: true` v `MetaHuman.uplugin`) | áno | zapnú sa ako závislosti |
-| MetaHumanCalibrationProcessing / MetaHumanCalibrationDiagnostics | kalibrácia stereo kamier | áno | zapnuté; **pre mono video->telo nie sú potrebné** |
+| MetaHumanCalibrationProcessing / MetaHumanCalibrationDiagnostics | kalibrácia stereo kamier | áno | **odstránené z .uproject** (pre mono video->telo netreba) |
 | MetaHumanCharacter (MetaHuman Creator, Beta) | tvorba/assemblovanie postavy (voliteľná vizualizácia) | áno | nezapnutý (nie je povinný, ale užitočný) |
 | MetaHumanLiveLink | live link zdroje (real-time) | áno | nezapnutý, pre offline workflow netreba |
-| **MetaHuman Animator Markerless Motion Capture** (Fab) | **telové sledovanie z videa** | **NIE** | **chýba – nainštalovať z Fab** |
+| **MetaHuman Animator Markerless Motion Capture** (`MetaHumanBodyTracker`, Fab) | **telové sledovanie z videa** | **áno** (`Plugins/Marketplace/MetaHumanBodyTracker_5.8`) | **zapnutý** |
 
-Poznámka: Epic stránka v kroku 2 spomína aj plugin „MetaHuman Animator Body Animation“ (Small Face Detector/Solver). Dokumentácia nehovorí, či je to ten istý plugin; po inštalácii z Fab to overiť v okne Plugins.
-Pluginy v `.uproject` som **nemenil**: Markerless plugin sa tam bez inštalácie z Fab pridať nedá a ostatné povinné sú riešené závislosťami.
+Poznámka: „Body Animation“ z Epic stránky je ten istý plugin ako Markerless Motion Capture (pozri sekciu 1).
+V `.uproject` je teraz zapnutý `MetaHumanBodyTracker`; `MetaHuman`, `MetaHumanCoreTech` a `IKRig` sú jeho závislosti.
 
 ## 3. Zistenia o tomto PC (z logu a nástrojov)
 
@@ -39,16 +39,16 @@ Pluginy v `.uproject` som **nemenil**: Markerless plugin sa tam bez inštalácie
 
 Zdroj: `Saved/Logs/AnimationsTest.log` z editora s Unreal MCP (UE 5.8.4) a `Config/DefaultEngine.ini`.
 
-- Namountované pluginy: `MetaHuman`, `MetaHumanCoreTech`, `MetaHumanSDK`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics`, `CaptureData`, `CaptureManagerCore`, `CaptureManagerEditor`, `PerformanceCaptureCore`, `LiveLink`, `LiveLinkDevice`, `LiveLinkHub`, `NNERuntimeORT`, `NNERuntimeBasicCpu`, `IKRig`, `ControlRig`, `FullBodyIK`, `PythonScriptPlugin`. Všetky závislosti MetaHuman pluginu sa teda zapli automaticky.
-- **Nenamountované:** žiadny plugin Markerless Motion Capture / `MetaHumanBodyTracker`; priečinok `Plugins` v projekte neexistuje. Blokujúci nedostatok z sekcie 1 **platí**.
+- Namountované pluginy (pôvodný stav pred inštaláciou Body Trackera): `MetaHuman`, `MetaHumanCoreTech`, `MetaHumanSDK`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics`, `CaptureData`, `CaptureManagerCore`, `CaptureManagerEditor`, `PerformanceCaptureCore`, `LiveLink`, `LiveLinkDevice`, `LiveLinkHub`, `NNERuntimeORT`, `NNERuntimeBasicCpu`, `IKRig`, `ControlRig`, `FullBodyIK`, `PythonScriptPlugin`. Všetky závislosti MetaHuman pluginu sa teda zapli automaticky.
+- **MetaHumanBodyTracker** sa po inštalácii z Fab a zapnutí v `.uproject` namountoval; v logu sa načítali moduly `MetaHumanBodyTracker`, `BodyTracker`, `Segmentation`, `MetaHumanBodyOptimizer` a `MetaHumanBodyTrackerInterface`, bez warningov a errorov.
 - `MetaHumanCharacter` a `MetaHumanLiveLink` nie sú namountované (nie sú povinné).
 - Default RHI: `DefaultGraphicsRHI=DefaultGraphicsRHI_DX12` v `DefaultEngine.ini`; log: `Using Default RHI: D3D12`, `Highest Feature Level of D3D12: SM6`. Krok 4 v sekcii 4 je splnený.
 - V logu pri MetaHuman/Markerless nie sú žiadne warningy ani errory.
 - Neoverené: vzhľad okna Plugins a Show Engine Content (nevidel som UI, len log).
 ## 4. Nastavenie editora krok za krokom
 
-1. V Epic Games Launcheri/Fab (prihlásený účet) pridaj do knižnice a nainštaluj do UE 5.8 **MetaHuman Animator Markerless Motion Capture**: <https://www.fab.com/listings/4095b8e0-3eff-44f1-acb4-cb40b99228b9>
-2. Otvor projekt. V **Edit > Plugins** over, že sú zapnuté: *MetaHuman Animator*, *Capture Manager*, *Live Link Hub*, *MetaHuman Animator Markerless Motion Capture*. Zapni, čo chýba, a reštartuj editor.
+1. **Hotovo:** plugin *MetaHuman Animator Markerless Motion Capture* je nainštalovaný do UE 5.8 (Fab Library > Install to Engine): <https://www.fab.com/listings/4095b8e0-3eff-44f1-acb4-cb40b99228b9>
+2. V `AnimationsTest.uproject` je zapnutý `MetaHumanBodyTracker`. V **Edit > Plugins** (kategória MetaHuman) over aj *MetaHuman Animator*, *Capture Manager*, *Live Link Hub*; po každej zmene reštartuj editor.
 3. Voliteľne zapni *MetaHuman Creator* (MetaHumanCharacter, Beta) pre tvorbu postavy.
 4. Over D3D12: **Project Settings > Platforms > Windows > Default RHI = DirectX 12**.
 5. V Content Browseri zapni **Show Engine Content**, aby si videl modely Small Face Detector/Solver.
@@ -79,7 +79,7 @@ Treba dohľadať: <https://dev.epicgames.com/documentation/metahuman/metahuman-a
 
 ## 8. Čo ostáva overiť
 
-- Inštalácia Markerless Motion Capture z Fab a presný názov pluginu v okne Plugins (rozdiel s „Body Animation“).
+- Zobrazenie pluginu v okne Plugins v UI (z logu je načítaný).
 - Vzhľad okna Plugins v UI (z logu je stav známy, pozri 3a).
 - Výkon a stabilita na 8 GB VRAM a 4 fyzických jadrách CPU.
 - Presné požiadavky na video (rozlíšenie, FPS, rámovanie).
