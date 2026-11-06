@@ -105,6 +105,8 @@ Postup, ktorý zabral (Python cez `-ExecutePythonScript`):
 
 Priamy export na Manny cez *Existing Skeleton* zo skriptu nejde: `SourceSkeletalMesh` nastavuje len editorové UI a pre tento režim sa sám nevytvorí. V UI dialógu Export Animation nebol skúšaný a môže byť čistejší.
 
+**Vizuálna kontrola: úspech.** Používateľ potvrdil, že pohyb Mannyho (`A_hrac_Manny_Upright`) zodpovedá videu.
+
 Obmedzenia: korekcia je jedna konštantná hodnota na celý klip, nie oprava príčiny. Výška hlavy sa počas klipu mení len o ~3 cm a nohy skoro stoja, takže animácia neukazuje výskok.
 
 ## 6. Požiadavky na video

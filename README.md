@@ -19,8 +19,8 @@ Testovací projekt pre Unreal Engine 5.8 (5.8.4, Windows): prevod videa na anim�
 - Zapnuté pluginy: `MetaHuman`, `MetaHumanBodyTracker` (MetaHuman Animator Markerless Motion Capture, beta, nainštalovaný z Fab do enginu), `MetaHumanCharacter` (potrebný pre Body Tracker), `ModelingToolsEditorMode`, `PythonScriptPlugin`, `ModelContextProtocol`, `EditorToolset`.
 - Plugin pre sledovanie tela z videa je nainštalovaný a načítaný (moduly `MetaHumanBodyTracker`, `BodyTracker`, `Segmentation`, `MetaHumanBodyOptimizer`, bez warningov v logu). Detaily v [Docs/MetaHumanVideoToBodyAnimation.md](Docs/MetaHumanVideoToBodyAnimation.md).
 - Unreal MCP otestovaný: server beží na porte 8000, `list_toolsets` a `call_tool` fungujú.
-- Technicky prešlo: video -> animácia tela na 5 s úseku (ingest, Performance, export `AnimSequence`), ~4,3 s na snímku. **Výsledok vizuálne nevyhovel** a bol odstránený. Detaily v [sekcii 5a](Docs/MetaHumanVideoToBodyAnimation.md).
-- Neoverené: test s vhodným klipom (jeden hráč, celá postava), dlhší klip, export na MetaHuman cez Existing Skeleton.
+- Video -> animácia tela funguje: 3 s klip je prenesený na postavu Manny a používateľ potvrdil, že zodpovedá videu (~2,8 s na snímku). Prvý test s nevhodným klipom vizuálne nevyhovel. Detaily v [sekcii 5a](Docs/MetaHumanVideoToBodyAnimation.md).
+- Známe obmedzenia: dáta vychádzajú ležato a príčina nie je zistená, korekcia je konštantná rotácia kosti `root`. Neoverené: výskok, dlhší klip, export cez dialóg Existing Skeleton.
 
 ## Použitie
 
