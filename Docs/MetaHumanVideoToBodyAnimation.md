@@ -18,7 +18,7 @@ Video -> body animation je v UE 5.8 **experimentálna** funkcia „MetaHuman Ani
 | MetaHumanSDK | základ MetaHuman nástrojov | áno | závislosť (log: mountnutý) |
 | CaptureData, CaptureManagerEditor, PerformanceCaptureCore, LiveLinkHub, NNERuntimeORT, IKRig... | závislosti MetaHuman pluginu (všetky `Enabled: true` v `MetaHuman.uplugin`) | áno | zapnú sa ako závislosti |
 | MetaHumanCalibrationProcessing / MetaHumanCalibrationDiagnostics | kalibrácia stereo kamier | áno | **odstránené z .uproject** (pre mono video->telo netreba) |
-| MetaHumanCharacter (MetaHuman Creator, Beta) | tvorba/assemblovanie postavy (voliteľná vizualizácia) | áno | nezapnutý (nie je povinný, ale užitočný) |
+| **MetaHumanCharacter** (MetaHuman Creator, Beta) | obsahuje `SKM_Body_DNA`, od ktorého závisí `/MetaHumanBodyTracker/SKM_Body` | áno | **zapnutý, potrebný** (bez neho log hlási `LoadErrors`) |
 | MetaHumanLiveLink | live link zdroje (real-time) | áno | nezapnutý, pre offline workflow netreba |
 | **MetaHuman Animator Markerless Motion Capture** (`MetaHumanBodyTracker`, Fab) | **telové sledovanie z videa** | **áno** (`Plugins/Marketplace/MetaHumanBodyTracker_5.8`) | **zapnutý** |
 
@@ -41,7 +41,7 @@ Zdroj: `Saved/Logs/AnimationsTest.log` z editora s Unreal MCP (UE 5.8.4) a `Conf
 
 - Namountované pluginy (pôvodný stav pred inštaláciou Body Trackera): `MetaHuman`, `MetaHumanCoreTech`, `MetaHumanSDK`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics`, `CaptureData`, `CaptureManagerCore`, `CaptureManagerEditor`, `PerformanceCaptureCore`, `LiveLink`, `LiveLinkDevice`, `LiveLinkHub`, `NNERuntimeORT`, `NNERuntimeBasicCpu`, `IKRig`, `ControlRig`, `FullBodyIK`, `PythonScriptPlugin`. Všetky závislosti MetaHuman pluginu sa teda zapli automaticky.
 - **MetaHumanBodyTracker** sa po inštalácii z Fab a zapnutí v `.uproject` namountoval; v logu sa načítali moduly `MetaHumanBodyTracker`, `BodyTracker`, `Segmentation`, `MetaHumanBodyOptimizer` a `MetaHumanBodyTrackerInterface`, bez warningov a errorov.
-- `MetaHumanCharacter` a `MetaHumanLiveLink` nie sú namountované (nie sú povinné).
+- `MetaHumanLiveLink` nie je namountovaný (pre offline workflow netreba). `MetaHumanCharacter` bol pôvodne vypnutý, čo spôsobilo `LoadErrors`; je zapnutý, pozri sekciu 5a.
 - Default RHI: `DefaultGraphicsRHI=DefaultGraphicsRHI_DX12` v `DefaultEngine.ini`; log: `Using Default RHI: D3D12`, `Highest Feature Level of D3D12: SM6`. Krok 4 v sekcii 4 je splnený.
 - V logu pri MetaHuman/Markerless nie sú žiadne warningy ani errory.
 - Neoverené: vzhľad okna Plugins a Show Engine Content (nevidel som UI, len log).
@@ -49,7 +49,7 @@ Zdroj: `Saved/Logs/AnimationsTest.log` z editora s Unreal MCP (UE 5.8.4) a `Conf
 
 1. **Hotovo:** plugin *MetaHuman Animator Markerless Motion Capture* je nainštalovaný do UE 5.8 (Fab Library > Install to Engine): <https://www.fab.com/listings/4095b8e0-3eff-44f1-acb4-cb40b99228b9>
 2. V `AnimationsTest.uproject` je zapnutý `MetaHumanBodyTracker`. V **Edit > Plugins** (kategória MetaHuman) over aj *MetaHuman Animator*, *Capture Manager*, *Live Link Hub*; po každej zmene reštartuj editor.
-3. Voliteľne zapni *MetaHuman Creator* (MetaHumanCharacter, Beta) pre tvorbu postavy.
+3. Zapni *MetaHuman Creator* (`MetaHumanCharacter`, Beta). Je potrebný: asset `/MetaHumanBodyTracker/SKM_Body` závisí od jeho obsahu. V tomto projekte je zapnutý.
 4. Over D3D12: **Project Settings > Platforms > Windows > Default RHI = DirectX 12**.
 5. V Content Browseri zapni **Show Engine Content**, aby si videl modely Small Face Detector/Solver.
 6. Voliteľne FFmpeg: v Capture Manageri *Settings > Use Third Party Encoder* a cesta k `ffmpeg.exe` (znižuje riziko neplatného FPS).
@@ -64,6 +64,28 @@ Zdroj: `Saved/Logs/AnimationsTest.log` z editora s Unreal MCP (UE 5.8.4) a `Conf
 5. Orež timeline, **Process**, skontroluj výsledok, prípadne uprav a spusti znova.
 6. **Export Animation:** *Existing Skeleton* (MetaHuman, automatický retarget) alebo *Performer Skeleton* (pre iné postavy, retarget cez IK Retargeter).
 7. **Aplikácia:** Level Sequence > Add Actor Track (MetaHuman), zmaž ControlRig track, na Body track pridaj exportovanú Animation Sequence.
+
+## 5a. Overený test (2026-11-06)
+
+Klip: mono video 1920x1080, 30 fps, 38 s (1148 snímok). Spracovaných bolo prvých 150 snímok, len telo (Facial Tracking vypnutý). Video a výsledné assety sú lokálne a nie sú v repozitári.
+
+| Krok | Výsledok |
+|---|---|
+| Ingest (Mono Video Ingest cez Live Link Hub) | OK, 46 s; assety v `/Game/CaptureManager/Imports/`, snímky v `%LOCALAPPDATA%\CaptureManager\Media\AnimationsTest` |
+| MetaHuman Performance (Process) | OK, `StartPipelineErrorType.NONE`, 641 s na 150 snímok (~4,3 s/snímka), `BODY` dáta áno |
+| Export Animation (Performer Skeleton) | OK, `AnimSequence`, 149 snímok, 4,97 s, 342 kostí |
+| Kontrola pohybu | rotácie sa menia na všetkých 11 kontrolovaných kostiach (najviac `upperarm_r` ~20°), panva sa posúva o ~8 cm |
+
+Odhad pre celý klip je lineárne ~80 minút, nebol skúšaný. Počas jednej vzorky v stage 3 bolo GPU na 100 % (7 GB z 8 GB VRAM) a CPU takmer nečinné; ostatné stage neboli merané, takže nie je potvrdené, že CPU nie je úzke hrdlo inde.
+
+**Neoverené:** vizuálna kvalita. Čísla ukazujú, že sa kosti hýbu, nie že pohyb zodpovedá videu. Animáciu treba pozrieť v editore.
+
+Poznámky k skriptovaniu:
+- Epic skripty: `CaptureManagerApp/Content/Python/examples/mono_video_ingest.py` (spúšťa sa v `LiveLinkHub.exe`, editor musí bežať) a `MetaHumanAnimator/Content/Python/process_monocular_performance.py`.
+- `-ExecutePythonScript=` po dobehnutí skriptu aplikáciu zavrie. Priečinok s videom musí obsahovať len klipy na import.
+- Blokujúce spracovanie hlási v správcovi úloh „Not Responding“, čo je očakávané.
+- `get_number_of_processed_frames()` počíta len dáta tváre, pri spracovaní iba tela vráti 0. Na kontrolu slúži `contains_animation_data_type(BODY)`.
+- Warning `Unspecified device class, assuming iPhone 13` sa v logu objavil; vplyv na výsledok nie je známy.
 
 ## 6. Požiadavky na video
 
@@ -81,9 +103,9 @@ Treba dohľadať: <https://dev.epicgames.com/documentation/metahuman/metahuman-a
 
 - Zobrazenie pluginu v okne Plugins v UI (z logu je načítaný).
 - Vzhľad okna Plugins v UI (z logu je stav známy, pozri 3a).
-- Výkon a stabilita na 8 GB VRAM a 4 fyzických jadrách CPU.
+- Stabilita na dlhších klipoch pri 8 GB VRAM (5 s klip využil ~7 GB).
 - Presné požiadavky na video (rozlíšenie, FPS, rámovanie).
-- Skúšobný beh na krátkom klipe.
+- Vizuálna kvalita animácie (pozri sekciu 5a) a export na MetaHuman cez *Existing Skeleton*.
 
 ## Zdroje
 
