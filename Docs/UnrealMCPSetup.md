@@ -31,4 +31,4 @@ Port 8000 je jeden na počítač: naraz nemôže bežať editor tohto projektu a
 ## Odľahčenie CPU (2026-11-06)
 
 Zmeny: z `.uproject` odstránené `AIAssistant`, `Landmass`, `InEditorDocumentation`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics` (zálohy: `*.bak`); v `DefaultEngine.ini` `r.ReflectionMethod=2`, `r.DynamicGlobalIlluminationMethod=0`, `r.Shadow.Virtual.Enable=0`, `r.Lumen.HardwareRayTracing=False`.
-Výsledok merania: idle CPU editora ~55 % z 8 vlákien pred aj po zmenách (bez shader workerov), takže **merateľné zlepšenie sa nepreukázalo**. `t.MaxFPS=30` nepomohlo a bolo vrátené. Meranie bolo skreslené, lebo v editore v tom čase bežalo PIE. `Landmass` sa naďalej načítava (závislosť iného pluginu).
+Výsledok merania: **efekt zmien nie je známy, lebo pred zmenami sa CPU nemeralo.** Všetky merania vznikli až po zmenách: editor ~50-55 % z 8 vlákien, bez shader workerov. `t.MaxFPS=30` hodnotu nezmenilo a bolo vrátené. V logu bolo okolo merania PIE; či sa s meraním časovo prekrývalo, nie je overené. `Landmass` sa naďalej načítava, dôvod nie je zistený.
