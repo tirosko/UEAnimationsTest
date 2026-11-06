@@ -7,7 +7,7 @@ Zdroje: inštalácia enginu (`.uplugin`, zdrojáky pluginov), `Saved/Logs/Animat
 
 Video -> body animation je v UE 5.8 **experimentálna** funkcia „MetaHuman Animator Markerless Motion Capture“ (len Windows, len editor). Používa sa cez asset **MetaHuman Performance** (MonoFootage + zapnuté *Body Tracking*).
 
-**Plugin je nainštalovaný a načítaný** (2026-11-06): *MetaHuman Animator Markerless Motion Capture*, názov pluginu `MetaHumanBodyTracker` v1.0.0 (Beta, Experimental), `E:\Epic_Games\UE_5.8\Engine\Plugins\Marketplace\MetaHumanBodyTracker_5.8` (~5,5 GB, obsahuje modely Detectron2, IK_SMPL a IK Retargeter pre MetaHuman). Je to ten istý plugin, ktorý Epic v kroku 2 nazýva „Body Animation“ - v UE 5.8 existuje len jeden plugin pre telo, v inštalácii nie je žiadny iný s „Body“ v názve. Bol nainštalovaný do **enginu** (Fab/Launcher), v projekte je zapnutý v `AnimationsTest.uproject`.
+**Plugin je nainštalovaný a načítaný** (2026-11-06): *MetaHuman Animator Markerless Motion Capture*, názov pluginu `MetaHumanBodyTracker` v1.0.0 (Beta, Experimental), `E:\Epic_Games\UE_5.8\Engine\Plugins\Marketplace\MetaHumanBodyTracker_5.8` (~5,5 GB, obsahuje modely Detectron2, IK_SMPL a IK Retargeter pre MetaHuman). Či je to ten istý plugin, ktorý Epic v kroku 2 nazýva „Body Animation“, nie je potvrdené; v inštalácii sa medzi súbormi `.uplugin` nenašiel iný s „Body“ v názve, čo to len naznačuje. Bol nainštalovaný do **enginu** (Fab/Launcher), v projekte je zapnutý v `AnimationsTest.uproject`.
 
 ## 2. Pluginy – stav
 
@@ -22,7 +22,7 @@ Video -> body animation je v UE 5.8 **experimentálna** funkcia „MetaHuman Ani
 | MetaHumanLiveLink | live link zdroje (real-time) | áno | nezapnutý, pre offline workflow netreba |
 | **MetaHuman Animator Markerless Motion Capture** (`MetaHumanBodyTracker`, Fab) | **telové sledovanie z videa** | **áno** (`Plugins/Marketplace/MetaHumanBodyTracker_5.8`) | **zapnutý** |
 
-Poznámka: „Body Animation“ z Epic stránky je ten istý plugin ako Markerless Motion Capture (pozri sekciu 1).
+Poznámka: vzťah „Body Animation“ z Epic stránky a Markerless Motion Capture nie je potvrdený (pozri sekciu 1).
 V `.uproject` je teraz zapnutý `MetaHumanBodyTracker`; `MetaHuman`, `MetaHumanCoreTech` a `IKRig` sú jeho závislosti.
 
 ## 3. Zistenia o tomto PC (z logu a nástrojov)

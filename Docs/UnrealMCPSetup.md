@@ -24,11 +24,11 @@ Port 8000 je jeden na počítač: naraz nemôže bežať editor tohto projektu a
 
 - `initialize` -> OK (protocol 2025-11-25); server vyžaduje hlavičku `Mcp-Session-Id` pre ďalšie volania.
 - `tools/list` -> `list_toolsets`, `describe_toolset`, `call_tool`.
-- `list_toolsets` -> 21 toolsetov (EditorAppToolset, LogsToolset, AssetTools, BlueprintTools, SkeletalMeshTools, ProgrammaticToolset, ...).
+- `list_toolsets` -> 20 toolsetov (EditorAppToolset, LogsToolset, AssetTools, BlueprintTools, SkeletalMeshTools, ProgrammaticToolset, ...).
 - `call_tool` `EditorToolset.EditorAppToolset.IsPIERunning` -> `{"returnValue":false}`.
 - Pluginy namountované v logu: MetaHuman, MetaHumanCoreTech, MetaHumanSDK, MetaHumanCalibrationDiagnostics, MetaHumanCalibrationProcessing, ModelContextProtocol, EditorToolset, PythonScriptPlugin.
 
 ## Odľahčenie CPU (2026-11-06)
 
-Zmeny: z `.uproject` odstránené `AIAssistant`, `Landmass`, `InEditorDocumentation`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics` (zálohy: `*.bak`); v `DefaultEngine.ini` `r.ReflectionMethod=2`, `r.DynamicGlobalIlluminationMethod=0`, `r.Shadow.Virtual.Enable=0`, `r.Lumen.HardwareRayTracing=False`.
+Zmeny: z `.uproject` odstránené `AIAssistant`, `Landmass`, `InEditorDocumentation`, `MetaHumanCalibrationProcessing`, `MetaHumanCalibrationDiagnostics` (záloha pôvodného `.uproject` už neexistuje; `DefaultEngine.ini.bak` je len lokálne); v `DefaultEngine.ini` `r.ReflectionMethod=2`, `r.DynamicGlobalIlluminationMethod=0`, `r.Shadow.Virtual.Enable=0`, `r.Lumen.HardwareRayTracing=False`.
 Výsledok merania: **efekt zmien nie je známy, lebo pred zmenami sa CPU nemeralo.** Všetky merania vznikli až po zmenách: editor ~50-55 % z 8 vlákien, bez shader workerov. `t.MaxFPS=30` hodnotu nezmenilo a bolo vrátené. V logu bolo okolo merania PIE; či sa s meraním časovo prekrývalo, nie je overené. `Landmass` sa naďalej načítava, dôvod nie je zistený.
