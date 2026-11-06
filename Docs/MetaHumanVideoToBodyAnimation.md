@@ -93,6 +93,20 @@ Klip: 1024x576, 30 fps, 3 s, 93 snímok, celý klip, len telo. Pipeline OK za 25
 
 Poznámka k ingestu: prvé spustenie Live Link Hub po štarte editora skončilo `TimeoutError: Timed out waiting for endpoint`, lebo editor sa pripojil až po uvoľnení hlavného vlákna Hubu. Druhé spustenie prešlo. Stalo sa to pri oboch testoch.
 
+### Prenos na postavu Manny (2026-11-06)
+
+Export na *Performer Skeleton* má dva problémy: sieť je holé telo bez hlavy a v oboch testoch vyšlo telo ležiace pozdĺž osi X (hlava X≈-50, nohy X≈+78, výška len 6-25 cm). Príčina ležania nie je zistená.
+
+Postup, ktorý zabral (Python cez `-ExecutePythonScript`):
+1. IK Rig pre `SKM_Manny_Simple`: `IKRigController.apply_auto_generated_retarget_definition()` -> `/Game/VideoTest/IK_Manny_Video`.
+2. Kópia Epic retargetera `/MetaHumanBodyTracker/RTG_MH_IKRig` (zdroj `IK_Metahuman`), cieľ prepnutý na Manny, `assign_ik_rig_to_all_ops`, `auto_map_chains(FUZZY)`, `auto_align_all_bones(TARGET)` -> `RTG_Video_To_Manny`.
+3. `IKRetargetBatchOperation.duplicate_and_retarget` zo `SK_A_hrac_Body` na Manny -> `A_hrac_Body_Manny`. Ležanie sa prenesie tiež.
+4. Korekcia: konštantná rotácia a posun kosti `root` cez `set_bone_track_keys`, vypočítané z priemernej osi nohy-hlava -> `A_hrac_Manny_Upright` (panva ~99 cm, hlava ~163 cm, nohy 10-20 cm).
+
+Priamy export na Manny cez *Existing Skeleton* zo skriptu nejde: `SourceSkeletalMesh` nastavuje len editorové UI a pre tento režim sa sám nevytvorí. V UI dialógu Export Animation nebol skúšaný a môže byť čistejší.
+
+Obmedzenia: korekcia je jedna konštantná hodnota na celý klip, nie oprava príčiny. Výška hlavy sa počas klipu mení len o ~3 cm a nohy skoro stoja, takže animácia neukazuje výskok.
+
 ## 6. Požiadavky na video
 
 Oficiálne stránky, ktoré som čítal, **nešpecifikujú** rozlíšenie, FPS, kodek, rámovanie, počet osôb ani statickú kameru. Epic uvádza len: funguje s webkamerou a podporovanými smartfónmi, alebo Live Link Face (iOS/Android); východiskový transcoder je Windows Media Framework, FFmpeg podporuje viac formátov.
