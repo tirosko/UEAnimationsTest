@@ -87,6 +87,12 @@ Poznámky k skriptovaniu:
 - `get_number_of_processed_frames()` počíta len dáta tváre, pri spracovaní iba tela vráti 0. Na kontrolu slúži `contains_animation_data_type(BODY)`.
 - Warning `Unspecified device class, assuming iPhone 13` sa v logu objavil; vplyv na výsledok nie je známy.
 
+### Druhý test (2026-11-06)
+
+Klip: 1024x576, 30 fps, 3 s, 93 snímok, celý klip, len telo. Pipeline OK za 257 s (~2,8 s/snímka; stage 1-5: 92, 50, 24, 69, 21 s). Export `AnimSequence`: 92 snímok, 3,07 s, 342 kostí. Pohyb je výrazne väčší než pri prvom teste (`lowerarm_r` yaw ~116°, `upperarm_r` ~60°). Hodnota `thigh_r` yaw ~356° je pravdepodobne len prechod uhla cez ±180°. Vizuálne posúdenie zatiaľ chýba.
+
+Poznámka k ingestu: prvé spustenie Live Link Hub po štarte editora skončilo `TimeoutError: Timed out waiting for endpoint`, lebo editor sa pripojil až po uvoľnení hlavného vlákna Hubu. Druhé spustenie prešlo. Stalo sa to pri oboch testoch.
+
 ## 6. Požiadavky na video
 
 Oficiálne stránky, ktoré som čítal, **nešpecifikujú** rozlíšenie, FPS, kodek, rámovanie, počet osôb ani statickú kameru. Epic uvádza len: funguje s webkamerou a podporovanými smartfónmi, alebo Live Link Face (iOS/Android); východiskový transcoder je Windows Media Framework, FFmpeg podporuje viac formátov.
