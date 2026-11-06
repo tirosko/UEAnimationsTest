@@ -1,0 +1,20 @@
+# Unreal Engine
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.idea/
+*.sln
+*.suo
+*.VC.db
+*.opensdf
+*.sdf
+*.xcodeproj
+*.bak
+# Large local video/capture output
+Content/CaptureManager/
+
+# Epic template content: not published (EULA); add back deliberately
+Content/
